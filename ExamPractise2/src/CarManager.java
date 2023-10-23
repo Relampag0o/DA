@@ -1,6 +1,7 @@
 import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
+import java.security.KeyStore;
 import java.util.*;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -51,9 +52,10 @@ public class CarManager {
     }
 
     public void showCarsByColor() {
-        HashMap<String, Integer> mostFrecuent = new HashMap<String, Integer>();
+        LinkedHashMap<String, Integer> mostFrecuent = new LinkedHashMap<String, Integer>();
         int max = 0;
         String color = "";
+
         for (Car c : cars) {
             if (!mostFrecuent.containsKey(c.getColor()))
                 mostFrecuent.put(c.getColor(), 1);
@@ -72,6 +74,10 @@ public class CarManager {
             if (c.getColor().equalsIgnoreCase(color))
                 System.out.println(c);
         }
+    }
+
+    public void test() {
+
     }
 
 
@@ -105,10 +111,10 @@ public class CarManager {
         try {
             BufferedWriter bfw = new BufferedWriter(new FileWriter(brand));
 
-            cars.sort(new BrandComparator());
+            cars.sort(new CVComparator());
 
             for (Car c : cars) {
-                bfw.write(c.getId() + ";" + c.getBrand() + ";" + c.getModel() + ";" + c.getCapacity() + c.getCv() + ";" + c.getColor() + '\n');
+                bfw.write(c.getId() + ";" + c.getBrand() + ";" + c.getModel() + ";" + c.getCapacity() +";" + c.getCv() + ";" + c.getColor() + '\n');
             }
 
             bfw.close();
@@ -167,7 +173,7 @@ public class CarManager {
             //cm.showCarsByCv(100);
             //cm.writeData("a4");
             //cm.groupByBrand("todos.txt");
-            cm.raf(8);
+            cm.groupByBrand("Toyota");
         } else
             System.out.println("The file does not exist or doesnt have read permission.");
 
