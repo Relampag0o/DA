@@ -141,6 +141,14 @@ public class CarManager {
             String line = "";
             int counter = 1;
 
+            /*
+            RandomAccessFile raf = new RandomAccessFile(dbSrc, "r");
+                    System.out.println(index);
+                    raf.seek(index);
+                    FileReader fr = new FileReader(raf.getFD());
+                    BufferedReader bfr2 = new BufferedReader(fr);
+                    System.out.println(bfr2.readLine());
+             */
             while ((line = bfr.readLine()) != null) {
                 if (index == counter) {
 
