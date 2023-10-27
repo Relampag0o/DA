@@ -25,6 +25,7 @@ public class CarManager {
 
             }
 
+
             if (cars.size() > 0) {
                 System.out.println("Data successfully loaded.");
             }
@@ -123,6 +124,10 @@ public class CarManager {
             System.out.println("Error..");
         }
 
+
+    }
+
+    public void randomTest(){
 
     }
 
