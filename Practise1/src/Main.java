@@ -11,7 +11,7 @@ public class Main {
         String port = "3306";
         String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
         String user = "root";
-        String password = "5856101097Ñ";
+        String password = "5856101097";
         try {
             this.c = DriverManager.getConnection(urlConnection, user, password);
             System.out.println("Connected");
@@ -19,6 +19,8 @@ public class Main {
             //showSQLError(e);
             e.printStackTrace();
         }
+        
+
     }
 
     public static void main(String[] args) {

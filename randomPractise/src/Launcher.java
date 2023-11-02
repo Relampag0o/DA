@@ -18,6 +18,7 @@ public class Launcher {
             }
         }
         return numbers;
+
     }
 
     public int[] integerToArray(int number) {
@@ -39,6 +40,7 @@ public class Launcher {
             System.out.println(n);
         }
     }
+
 
     public int getNumber(int number) {
         String numString = "";
