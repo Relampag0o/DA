@@ -239,9 +239,37 @@ public class Main {
 
         try {
             st = c.createStatement();
-            ResultSet mrs = databaseMetaData.getColumns(null, null, pattern, null);
-            while (mrs.next()) {
-                System.out.println(mrs.getString("column_name"));
+            ResultSet catalogs = databaseMetaData.getCatalogs();
+            while (catalogs.next()) {
+                String dbName = catalogs.getString(1);
+                System.out.println("Database Name: " + dbName);
+                System.out.println("----------------");
+                ResultSet tableNames = databaseMetaData.getTables(dbName, null, null, null);
+                while (tableNames.next()) {
+                    System.out.println("Table name: " + tableNames.getString("TABLE_NAME"));
+                    ResultSet columns = databaseMetaData.getColumns(null, null, tableNames.getString("TABLE_NAME"), null);
+                    System.out.println("---COLUMNS---");
+                    while (columns.next()) {
+                        System.out.print(columns.getString("COLUMN_NAME") + " ");
+                        String query = "SELECT * FROM " + tableNames.getString("TABLE_NAME") + " WHERE " + columns.getString("COLUMN_NAME")
+                                + " LIKE '" + pattern + "'" + ";";
+                        ResultSet results = st.executeQuery(query);
+                        ResultSetMetaData rsm = results.getMetaData();
+                        while (results.next()) {
+                            ResultSetMetaData metadata = results.getMetaData();
+                            int columnCount = metadata.getColumnCount();
+                            for (int i = 1; i <= columnCount; i++) {
+                                System.out.print(metadata.getColumnName(i) + ": " + results.getString(i) + " ");
+                            }
+                            System.out.println();
+                        }
+
+
+                    }
+                    System.out.println(" ");
+                }
+
+                System.out.println("----------------");
 
             }
 
@@ -255,7 +283,7 @@ public class Main {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Main m = new Main();
         LinkedList<String> columns = new LinkedList<String>();
         /*
@@ -264,7 +292,13 @@ public class Main {
         m.selectFrom("color", columns, "color_id='10'");
         */
         //m.displayCommonFields("product_categories", "categories");
-        m.hackDB("suppliers");
+
+        Statement st = m.c.createStatement();
+        ResultSet rs = st.executeQuery("SHOW TABLES FROM categories");
+        while (rs.next()) {
+            System.out.println(rs);
+        }
+        //m.hackDB("h");
 
 
     }
