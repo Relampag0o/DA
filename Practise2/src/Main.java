@@ -1,4 +1,4 @@
-import java.io.Closeable;
+import java.io.*;
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -39,7 +39,7 @@ public class Main {
     }
 
     public void openConnection() {
-        String db = "dbproducts";
+        String db = "w3schools";
         String host = "localhost";
         String port = "3306";
         String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
@@ -283,6 +283,28 @@ public class Main {
 
     }
 
+
+    public void readCsv(String f) throws FileNotFoundException {
+        Statement st = null;
+        try {
+            st = c.createStatement();
+            BufferedReader bfr = new BufferedReader(new FileReader(f));
+            String line = "";
+
+            while ((line = bfr.readLine()) != null) {
+                st.executeQuery("");
+            }
+
+            st.executeQuery(sql);
+
+        } catch (SQLException | IOException s) {
+            s.printStackTrace();
+
+        }
+
+
+    }
+
     public static void main(String[] args) throws SQLException {
         Main m = new Main();
         LinkedList<String> columns = new LinkedList<String>();
@@ -293,12 +315,8 @@ public class Main {
         */
         //m.displayCommonFields("product_categories", "categories");
 
-        Statement st = m.c.createStatement();
-        ResultSet rs = st.executeQuery("SHOW TABLES FROM categories");
-        while (rs.next()) {
-            System.out.println(rs);
-        }
-        //m.hackDB("h");
+
+        m.hackDB("h");
 
 
     }
