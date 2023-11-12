@@ -212,7 +212,6 @@ public class Main {
 
             if (!commonFields.isEmpty()) {
                 String commonFieldsStr = String.join(", ", commonFields);
-
                 String query = "SELECT " + "t1." + commonFieldsStr + " FROM " + table1 + " AS t1 INNER JOIN " + table2 +
                         " AS t2 ON t1." + commonFields.get(0) + " = t2." + commonFields.get(0);
                 System.out.println(query);
@@ -235,7 +234,24 @@ public class Main {
         }
     }
 
-    public void hackDB() {
+    public void hackDB(String pattern) {
+        Statement st = null;
+
+        try {
+            st = c.createStatement();
+            ResultSet mrs = databaseMetaData.getColumns(null, null, pattern, null);
+            while (mrs.next()) {
+                System.out.println(mrs.getString("column_name"));
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            closeStatement(st);
+        }
 
     }
 
@@ -247,11 +263,8 @@ public class Main {
         columns.add("color_code");
         m.selectFrom("color", columns, "color_id='10'");
         */
-        
-
-
-        m.addData("product_colors","color_id","3");
-        m.displayCommonFields("color", "product_colors");
+        //m.displayCommonFields("product_categories", "categories");
+        m.hackDB("suppliers");
 
 
     }
