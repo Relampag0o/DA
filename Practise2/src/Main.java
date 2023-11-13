@@ -39,12 +39,12 @@ public class Main {
     }
 
     public void openConnection() {
-        String db = "w3schools";
+        String db = "dbproducts";
         String host = "localhost";
         String port = "3306";
         String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
         String user = "root";
-        String password = "5856101097";
+        String password = "...";
         try {
             this.c = DriverManager.getConnection(urlConnection, user, password);
             System.out.println("Connected");
@@ -234,6 +234,7 @@ public class Main {
         }
     }
 
+    // todo: finish this exercise. not working atm
     public void hackDB(String pattern) {
         Statement st = null;
 
@@ -283,23 +284,33 @@ public class Main {
 
     }
 
+    // todo: optimize this code
 
-    public void readCsv(String f) throws FileNotFoundException {
+    public void readCsv(String f) {
         Statement st = null;
         try {
             st = c.createStatement();
             BufferedReader bfr = new BufferedReader(new FileReader(f));
-            String line = "";
+            String line = bfr.readLine();
+            String s = "";
 
             while ((line = bfr.readLine()) != null) {
-                st.executeQuery("");
+                System.out.println("INSERT INTO product (product_id, product_name, other_data) VALUES (" +
+                        "'" + (line.split(",")[0] + "'," +
+                        "'" + line.split(",")[1] + "'," +
+                        "'" + line.split(",")[2] + "')"));
+                st.executeUpdate("INSERT INTO product (product_id, product_name, other_data) VALUES (" +
+                        "'" + line.split(",")[0] + "'," +
+                        "'" + line.split(",")[1] + "'," +
+                        "'" + line.split(",")[2] + "')");
             }
 
-            st.executeQuery(sql);
 
-        } catch (SQLException | IOException s) {
-            s.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
 
+        } finally {
+            closeStatement(st);
         }
 
 
@@ -316,7 +327,8 @@ public class Main {
         //m.displayCommonFields("product_categories", "categories");
 
 
-        m.hackDB("h");
+        //m.hackDB("h");
+        m.readCsv("/home/jose/Descargas/products.csv");
 
 
     }
