@@ -39,12 +39,12 @@ public class Main {
     }
 
     public void openConnection() {
-        String db = "dbproducts";
+        //String db = "dbproducts";
         String host = "localhost";
         String port = "3306";
-        String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
+        String urlConnection = "jdbc:mariadb://" + host + ":" + port;
         String user = "root";
-        String password = "...";
+        String password = "5856101097";
         try {
             this.c = DriverManager.getConnection(urlConnection, user, password);
             System.out.println("Connected");
@@ -242,18 +242,19 @@ public class Main {
             st = c.createStatement();
             ResultSet catalogs = databaseMetaData.getCatalogs();
             while (catalogs.next()) {
+                st.execute("USE " + catalogs.getString(1));
                 String dbName = catalogs.getString(1);
                 System.out.println("Database Name: " + dbName);
                 System.out.println("----------------");
                 ResultSet tableNames = databaseMetaData.getTables(dbName, null, null, null);
                 while (tableNames.next()) {
                     System.out.println("Table name: " + tableNames.getString("TABLE_NAME"));
-                    ResultSet columns = databaseMetaData.getColumns(null, null, tableNames.getString("TABLE_NAME"), null);
+                    ResultSet columns = databaseMetaData.getColumns(dbName, null, tableNames.getString("TABLE_NAME"), null);
                     System.out.println("---COLUMNS---");
                     while (columns.next()) {
                         System.out.print(columns.getString("COLUMN_NAME") + " ");
-                        String query = "SELECT * FROM " + tableNames.getString("TABLE_NAME") + " WHERE " + columns.getString("COLUMN_NAME")
-                                + " LIKE '" + pattern + "'" + ";";
+                        String query = "SELECT * FROM " + tableNames.getString("TABLE_NAME") + " WHERE `" + columns.getString("COLUMN_NAME")
+                                + "` LIKE '%" + pattern + "%'" + ";";
                         ResultSet results = st.executeQuery(query);
                         ResultSetMetaData rsm = results.getMetaData();
                         while (results.next()) {
@@ -284,7 +285,6 @@ public class Main {
 
     }
 
-    // todo: optimize this code
 
     public void readCsv(String f) {
         Statement st = null;
@@ -327,8 +327,7 @@ public class Main {
         //m.displayCommonFields("product_categories", "categories");
 
 
-        //m.hackDB("h");
-        m.readCsv("/home/jose/Descargas/products.csv");
+        m.hackDB("h");
 
 
     }
