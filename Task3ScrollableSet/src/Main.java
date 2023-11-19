@@ -176,28 +176,25 @@ public class Main {
                 rs = st.executeQuery(q);
                 meta = rs.getMetaData();
                 int columnCount = meta.getColumnCount();
-
+                rs.last();
+                int rowCount = rs.getRow();
+                int middle = rs.getRow() / 2;
+                rs.beforeFirst();
                 while (rs.next()) {
                     System.out.println("ROW: " + rs.getRow());
-                    StringBuilder columns = new StringBuilder();
-                    StringBuilder data = new StringBuilder();
-                    if (rs.getRow() == 1 || rs.getRow() == columnCount / 2 || rs.getRow() == columnCount) {
+                    String columns = " ";
+                    String data = " ";
+                    if (rs.getRow() == 1 || rs.getRow() == middle || rs.getRow() == rowCount) {
                         for (int i = 1; i <= columnCount; i++) {
-                            columns.append(meta.getColumnName(i)).append(" ");
-                            data.append(rs.getString(i)).append(" ").append(rs.getString(i)).append(" ").append(rs.getString(i)).append(" ");
+                            columns += meta.getColumnName(i) + " ";
+                            data += rs.getString(i) + " ";
                         }
                         System.out.println(columns);
                         System.out.println(data);
                         System.out.println("--------------");
 
-                        columns.setLength(0);
-                        data.setLength(0);
-                        // seems like this clears the sb...
+
                     }
-
-
-
-
 
 
                 }
@@ -214,6 +211,87 @@ public class Main {
 
     }
 
+    public void displayMiddleData(LinkedList<String> queries, int columnIndex) {
+
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSetMetaData meta = null;
+        try {
+            st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            for (String q : queries) {
+                rs = st.executeQuery(q);
+                meta = rs.getMetaData();
+                int columnCount = meta.getColumnCount();
+                rs.last();
+                int rowCount = rs.getRow();
+                if (rowCount >= 1) {
+                    if (rowCount > 1)
+                        rs.absolute(rs.getRow() / 2);
+
+                    String columns = " ";
+                    String data = " ";
+                    for (int i = 1; i <= columnCount; i++) {
+                        columns += meta.getColumnName(i) + " ";
+                        data += rs.getString(i) + " ";
+                    }
+                    System.out.println(columns);
+                    System.out.println(data);
+                    System.out.println("--------------");
+
+                    if (rowCount > 1)
+                        rs.absolute((rs.getRow() / 2) + 1);
+
+                    columns = " ";
+                    data = " ";
+                    for (int i = 1; i <= columnCount; i++) {
+                        columns += meta.getColumnName(i) + " ";
+                        data += rs.getString(i) + " ";
+                    }
+                    System.out.println(columns);
+                    System.out.println(data);
+                    System.out.println("--------------");
+
+                    if (rowCount > 1)
+                        rs.absolute((rs.getRow() / 2) + 2);
+
+                    columns = " ";
+                    data = " ";
+                    for (int i = 1; i <= columnCount; i++) {
+                        columns += meta.getColumnName(i) + " ";
+                        data += rs.getString(i) + " ";
+                    }
+                    System.out.println(columns);
+                    System.out.println(data);
+                    System.out.println("--------------");
+
+                    if (columnIndex <= rowCount)
+                        rs.absolute((columnIndex));
+
+                    columns = " ";
+                    data = " ";
+                    for (int i = 1; i <= columnCount; i++) {
+                        columns += meta.getColumnName(i) + " ";
+                        data += rs.getString(i) + " ";
+                    }
+                    System.out.println(columns);
+                    System.out.println(data);
+                    System.out.println("--------------");
+
+
+                } else
+                    System.out.println("The query doesnt give any result.");
+            }
+        } catch (SQLException s) {
+            showSQLError(s);
+
+        } finally {
+            closeStatement(st);
+            closeResultSet(rs);
+        }
+
+
+    }
+
 
     public static void main(String[] args) {
         Main m = new Main();
@@ -222,13 +300,32 @@ public class Main {
         queries.add("select ProductName,price from products where ProductName like 'T%' and price <10;");
         queries.add("select * from suppliers where country = 'USA' or country = 'Italy';");
         queries.add("select * from customers where city like '%n' and city like '%a%';");
-        */
+
         queries.add("select categoryid, avg(price) as median from products group by categoryid;");
         queries.add("select categoryid from products  where productID is not NULL;");
         queries.add("select count(orderid) as amount_orders from orders\n" +
                 "         where year(OrderDate)=1996 and month(OrderDate)=7;");
         m.showThreeRows(queries);
-        //m.query("select ProductName,price from products where ProductName like 'T%' and price <10;");
+        */
+        queries.add("select count(orderid) as amount_orders from orders where year(OrderDate)=1996 and month(OrderDate)=7;");
+        queries.add(" SELECT\n" +
+                "        products.ProductID,\n" +
+                "        products.ProductName,\n" +
+                "        SUM(order_details.Quantity) AS TotalQuantitySold\n" +
+                "        FROM products\n" +
+                "        INNER JOIN order_details ON products.ProductID = order_details.ProductID\n" +
+                "        INNER JOIN orders ON order_details.OrderID = orders.OrderID\n" +
+                "        WHERE YEAR(orders.OrderDate) = 1996\n" +
+                "        GROUP BY products.ProductID, products.ProductName\n" +
+                "        ORDER BY TotalQuantitySold DESC\n" +
+                "        LIMIT 10;");
+        queries.add("select * from orders\n" +
+                "        INNER JOIN order_details on order_details.OrderID = orders.OrderID\n" +
+                "        INNER JOIN products on order_details.ProductID = products.ProductID\n" +
+                "        where products.price > 300;");
+        m.displayMiddleData(queries, 3);
+
+
         /*
         1
         select ProductName,price from products where ProductName like 'T%' and price <10;
