@@ -5,11 +5,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 public class PrimaryController {
     public Connection c;
@@ -19,6 +25,8 @@ public class PrimaryController {
     ComboBox comboBox;
     @FXML
     TableView tableV;
+    private ObservableList<ObservableList<Object>> data = FXCollections.observableArrayList();
+
 
     @FXML
     TextField selectField;
@@ -80,6 +88,7 @@ public class PrimaryController {
     public void submit() {
         Statement st = null;
         tableV.getColumns().clear();
+        data.clear();
         try {
             st = c.createStatement();
             if (comboBox.getValue() != null) {
@@ -89,10 +98,23 @@ public class PrimaryController {
                 if (selectParts[0].contains("*")) {
                     ResultSet columnNames = databaseMetaData.getColumns("w3schools", null, table, null);
                     while (columnNames.next()) {
-                        TableColumn<Object, Object> column = new TableColumn<>(columnNames.getString("COLUMN_NAME"));
+                        TableColumn<ObservableList<Object>, Object> column = new TableColumn<>(columnNames.getString("COLUMN_NAME"));
+
+                        // i copied this code from the AI. got no clue about how it works.
+                        column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList<Object>, Object>, ObservableValue<Object>>() {
+                            @Override
+                            public ObservableValue<Object> call(TableColumn.CellDataFeatures<ObservableList<Object>, Object> features) {
+                                int index = tableV.getColumns().indexOf(column);
+                                if (index >= 0 && index < features.getValue().size()) {
+                                    return new ReadOnlyObjectWrapper<>(features.getValue().get(index));
+                                } else {
+                                    return new ReadOnlyObjectWrapper<>(null);
+                                }
+                            }
+                        });
+
                         column.setPrefWidth(88);
                         tableV.getColumns().add(column);
-
                     }
                     // making sure users don't need to add the '' on the whereClause:
                     String whereClause = whereField.getText();
@@ -102,22 +124,58 @@ public class PrimaryController {
                     ResultSet query = st.executeQuery(sql);
                     ResultSetMetaData meta = query.getMetaData();
                     while (query.next()) {
-                        List<Object> rowData = new ArrayList<>();
+                        ObservableList<Object> rowData = FXCollections.observableArrayList();
                         for (int i = 1; i <= meta.getColumnCount(); i++) {
+                            System.out.println(query.getObject(i));
                             rowData.add(query.getObject(i));
                         }
-                        tableV.getItems().add(rowData);
+                        data.add(rowData);
+                    }
+                    tableV.setItems(data);
+
+                } else {
+                    String sql = "SELECT " + selectField.getText() + " FROM " + table;
+                    if (!whereField.getText().isEmpty()) {
+                        sql += " WHERE " + whereField.getText();
+                    }
+                    sql += ";";
+
+                    ResultSet query = st.executeQuery(sql);
+                    ResultSetMetaData meta = query.getMetaData();
+
+                    for (int i = 1; i <= meta.getColumnCount(); i++) {
+                        final int columnIndex = i;
+
+                        TableColumn<ObservableList<Object>, Object> column = new TableColumn<>(meta.getColumnName(i));
+
+                        column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList<Object>, Object>, ObservableValue<Object>>() {
+                            @Override
+                            public ObservableValue<Object> call(TableColumn.CellDataFeatures<ObservableList<Object>, Object> features) {
+                                return new ReadOnlyObjectWrapper<>(features.getValue().get(columnIndex - 1));
+                            }
+                        });
+
+                        column.setPrefWidth(88);
+                        tableV.getColumns().add(column);
                     }
 
-                } else
-                    System.out.println("..");
+                    while (query.next()) {
+                        ObservableList<Object> row = FXCollections.observableArrayList();
+                        for (int j = 1; j <= meta.getColumnCount(); j++) {
+                            row.add(query.getObject(j));
+                        }
+                        tableV.getItems().add(row);
+                    }
+
+                    query.close();
+                    st.close();
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
 
         }
 
     }
-
-
 }
