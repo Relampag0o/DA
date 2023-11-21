@@ -52,7 +52,7 @@ public class PrimaryController {
         String db = "w3schools";
         String host = "localhost";
         String port = "3306";
-        String urlConnection = "jdbc:mariadb://" + host + ":" + port;
+        String urlConnection = "jdbc:mariadb://" + host + ":" + port + "?AllowMultiQueries=True";
         String user = "root";
         String password = "5856101097";
         try {
@@ -116,11 +116,14 @@ public class PrimaryController {
                         column.setPrefWidth(88);
                         tableV.getColumns().add(column);
                     }
-                    // making sure users don't need to add the '' on the whereClause:
-                    String whereClause = whereField.getText();
-                    String[] parts = whereClause.split("=");
-                    whereClause = parts[0] + "'" + parts[1] + "'";
-                    String sql = "SELECT " + selectField.getText() + " FROM " + table + " WHERE " + whereField.getText() + ";";
+
+                    String sql = "";
+                    if (whereField.getText().isEmpty())
+                        sql = "SELECT " + selectField.getText() + " FROM " + table + ";";
+                    else
+                        sql = "SELECT " + selectField.getText() + " FROM " + table + " WHERE " + whereField.getText() + ";";
+
+                    System.out.println(sql);
                     ResultSet query = st.executeQuery(sql);
                     ResultSetMetaData meta = query.getMetaData();
                     while (query.next()) {
@@ -136,10 +139,9 @@ public class PrimaryController {
                 } else {
                     String sql = "SELECT " + selectField.getText() + " FROM " + table;
                     if (!whereField.getText().isEmpty()) {
-                        sql += " WHERE " + whereField.getText();
+                        sql += " WHERE " + whereField.getText() + ";";
                     }
-                    sql += ";";
-
+                    System.out.println("THIS IS THE SECOND CASE SOUT" + sql);
                     ResultSet query = st.executeQuery(sql);
                     ResultSetMetaData meta = query.getMetaData();
 
@@ -174,6 +176,7 @@ public class PrimaryController {
 
         } catch (Exception e) {
             e.printStackTrace();
+
 
         }
 
