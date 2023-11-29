@@ -315,7 +315,9 @@ public class Main {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                
+                System.out.println("@Student: " + rs.getString(1));
+                System.out.println(rs.getInt(2) + " Lessons: ");
+                System.out.println("- Lesson <" + rs.getInt(3) +  ">" + " the day <" + rs.getString(4) + ">" + " at <" + rs.getString(5)+ ">");
 
             }
 
@@ -344,7 +346,8 @@ public class Main {
 
         // m.renameStudents();
         //m.sessionsPlayed();
-        m.manageIncidents();
+        //m.manageIncidents();
+        m.lessonsGroupedByStudent();
 
 
     }
