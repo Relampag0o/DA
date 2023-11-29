@@ -84,9 +84,9 @@ public class Main {
     }
 
     public void delete(String table, String whereClause) {
-        Statement st = null;
+        PreparedStatement st = null;
         try {
-            st = c.createStatement();
+            st = c.prepareStatement("DELETE FROM " + table + " WHERE " + whereClause + ";");
             st.executeUpdate("DELETE FROM " + table + " WHERE " + whereClause + ";");
         } catch (Exception e) {
             e.printStackTrace();
@@ -316,6 +316,23 @@ public class Main {
 
     }
 
+    public void randomTest() {
+        Statement st = null;
+        try {
+            st = c.createStatement();
+            String[] r = {"SYSTEM TABLE"};
+            try (ResultSet resultSet = databaseMetaData.getTables(null, null, null, r)) {
+                System.out.println(r.length);
+                while (resultSet.next()) {
+                    String systemTableName = resultSet.getString("TABLE_NAME");
+
+                }
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         Main m = new Main();
         LinkedList<String> columns = new LinkedList<String>();
@@ -326,8 +343,7 @@ public class Main {
         */
         //m.displayCommonFields("product_categories", "categories");
 
-
-        m.hackDB("h");
+        m.randomTest();
 
 
     }

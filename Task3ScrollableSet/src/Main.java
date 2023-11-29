@@ -166,6 +166,7 @@ public class Main {
 
     }
 
+
     public void showThreeRows(LinkedList<String> queries) {
         Statement st = null;
         ResultSet rs = null;
