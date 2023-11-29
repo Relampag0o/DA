@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +13,7 @@ public class Main {
     DatabaseMetaData meta;
 
     public void openConnection() {
-        String db = "w3schools";
+        String db = "dbproducts";
         String host = "localhost";
         String port = "3306";
         String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
@@ -157,8 +159,6 @@ public class Main {
 
     public void innerJoin(String table1, String table2) {
         PreparedStatement pst = null;
-
-
         try {
             pst = c.prepareStatement("SELECT * FROM " + table1);
             ResultSet rs = pst.executeQuery();
@@ -185,9 +185,9 @@ public class Main {
             rsmeta = rs.getMetaData();
             columnCount = rsmeta.getColumnCount();
 
-            // with this method we are taking common columns and setting to the list. wonder if there is any way to avoid creating second list..
+            // with this method we are taking common columns and setting to the list.
+            // wonder if there is any way to avoid creating second list..
             fieldsTable1.retainAll(fieldsTable2);
-            System.out.println(fieldsTable1.size());
             pst = c.prepareStatement("SELECT * FROM " + table1 + " " + "INNER JOIN " + table2 + " on " + table1 + "." + fieldsTable1.get(0) + "=" + table2 + "." + fieldsTable1.get(0) + ";");
             rs = pst.executeQuery();
             rsmeta = rs.getMetaData();
@@ -201,6 +201,7 @@ public class Main {
 
             while (rs.next()) {
                 for (int i = 1; i <= columnCount; i++) {
+                    // that weird string is used to display fields as a table (or at least try to)
                     data += String.format("%-15s", rs.getString(i));
                 }
                 data += "\n";
@@ -210,12 +211,96 @@ public class Main {
             System.out.println(columnNames);
             System.out.println(data);
 
+            pst.close();
+            rs.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+
+    public void hackDB(String pattern) {
+        PreparedStatement pst = null;
+
+        try {
+            ResultSet rs = meta.getTables("w3schools", null, null, new String[]{"TABLE"});
+            while (rs.next()) {
+                String tableName = rs.getString(3);
+                System.out.println("Table name: " + tableName);
+                ResultSet columnNames = meta.getColumns("w3schools", "null", tableName, null);
+                while (columnNames.next()) {
+                    pst = c.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnNames.getString("COLUMN_NAME") + " LIKE " + "?" + ";");
+                    pst.setString(1, pattern);
+
+
+                    ResultSet results = pst.executeQuery();
+                    ResultSetMetaData rsmeta = results.getMetaData();
+                    int columnCount = rsmeta.getColumnCount();
+                    String columns = "";
+                    String data = "";
+
+                    for (int i = 1; i <= columnCount; i++) {
+                        columns += rsmeta.getColumnName(i) + " | ";
+                    }
+
+
+                    while (results.next()) {
+                        for (int i = 1; i <= columnCount; i++) {
+                            // that weird string is used to display fields as a table (or at least try to)
+                            data += String.format("%-15s", results.getString(i));
+                        }
+                        data += "\n";
+
+                    }
+                    System.out.println(columns);
+                    System.out.println(data);
+
+                }
+
+
+            }
+
+            rs.close();
+            pst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void readCSV(String file) {
+        PreparedStatement pst = null;
+
+        try {
+            BufferedReader bfr = new BufferedReader(new FileReader(file));
+            String line = bfr.readLine();
+            while ((line = bfr.readLine()) != null) {
+                String[] fields = line.split(",");
+                pst = c.prepareStatement("INSERT INTO PRODUCT(product_id,product_name,other_data) VALUES(?,?,?)");
+                c.setAutoCommit(false);
+                pst.setInt(1, Integer.parseInt(fields[0]));
+                pst.setString(2, fields[1]);
+                pst.setDouble(3, Double.parseDouble(fields[2]));
+                pst.executeUpdate();
+            }
+            System.out.println("The load was successfull.");
+            c.commit();
+
+        } catch (Exception e) {
+            try {
+                e.printStackTrace();
+                c.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+
+
+    }
 
     public static void main(String[] args) {
         Main m = new Main();
@@ -225,6 +310,8 @@ public class Main {
         //m.retrieveDataWithWhereClause("product", new String[]{"product_name"}, "product_id=1");
         //m.showDataFromDB();
         //m.retrieveDataWithWhereClause("categories",new String[]{"category_name"},"category_id=2");
-        m.innerJoin("products", "order_details");
+        //m.innerJoin("products", "order_details");
+        //m.hackDB("Ikura");
+        m.readCSV("C:\\Users\\josem\\Downloads\\products (1).csv");
     }
 }

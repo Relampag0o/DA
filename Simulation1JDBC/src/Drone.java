@@ -4,9 +4,9 @@ public class Drone {
     private String brand;
     private String model;
 
-    private int size;
+    private String size;
 
-    public Drone(int id, String brand, String model, int size) {
+    public Drone(int id, String brand, String model, String size) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -37,11 +37,11 @@ public class Drone {
         this.model = model;
     }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
