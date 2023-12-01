@@ -265,13 +265,7 @@ public class Main {
     }
 
     public void manageIncidents() {
-        /*
-        Añadir una nueva tabla denominada “Incidencia” que representa un problema en un
-        vuelo concreto con un alumno y/o un dron. Añade alguna incidencia. Tener en
-        cuenta que las incidencias sólo pueden crearse en vuelos que aún no han finalizado
-        (hora de fin es null).
 
-         */
 
         PreparedStatement pst = null;
 
