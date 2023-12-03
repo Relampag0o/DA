@@ -360,6 +360,43 @@ public class Main {
 
     }
 
+    public void retrieveStudentWithMoreBorrowedBooks() {
+        PreparedStatement pst = null;
+        try {
+            pst = c.prepareStatement("select  students.name,count(*) as numberOfBooks from loans\n" +
+                    "INNER JOIN students on students.id = loans.student_id\n" +
+                    "group by students.id LIMIT 1");
+            ResultSet rs = pst.executeQuery();
+            rs.next();
+
+            System.out.println("Student: " + rs.getString(1) + " borrowed " + rs.getInt(2) + " books");
+
+            pst.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void retrieveMostBorrowedBook() {
+        PreparedStatement pst = null;
+        try {
+            pst = c.prepareStatement("select books.title,count(*) as numberOfBooks  from loans\n" +
+                    "INNER JOIN books on loans.isbn_book = books.isbn\n" +
+                    "group by loans.isbn_book\n" +
+                    "LIMIT 1;");
+            ResultSet rs = pst.executeQuery();
+            rs.first();
+            System.out.println("Most borrowed book: " + rs.getString(1) + " borrowed " + rs.getInt(2) + " times");
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         Main m = new Main();
         m.openConnection();
@@ -385,7 +422,9 @@ public class Main {
         //m.findBooks("tupimama");
         //m.returnBook(1);
         //m.createReportWithouthMap();
-        m.createReportWithMap();
+        //m.createReportWithMap();
+        m.retrieveStudentWithMoreBorrowedBooks();
+        m.retrieveMostBorrowedBook();
 
     }
 }
