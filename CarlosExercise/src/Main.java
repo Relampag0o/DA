@@ -19,6 +19,8 @@ public class Main {
         System.err.println("SQL error code: " + e.getErrorCode());
     }
 
+
+
     public static void close(Closeable c) {
         if (c != null) {
             try {
