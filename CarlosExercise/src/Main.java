@@ -391,6 +391,22 @@ public class Main {
             System.out.println("Most borrowed book: " + rs.getString(1) + " borrowed " + rs.getInt(2) + " times");
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void retrieveNonBorrowedBooks() {
+        PreparedStatement pst = null;
+        try {
+            pst = c.prepareStatement("select * from loans\n" +
+                    "right JOIN books on books.isbn = loans.isbn_book\n" +
+                    "where loan_id is null;");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getString("title") + " " +rs.getInt("isbn") + " " + rs.getString("author") + " " + rs.getInt("available_copies") );
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -423,8 +439,9 @@ public class Main {
         //m.returnBook(1);
         //m.createReportWithouthMap();
         //m.createReportWithMap();
-        m.retrieveStudentWithMoreBorrowedBooks();
-        m.retrieveMostBorrowedBook();
+        //m.retrieveStudentWithMoreBorrowedBooks();
+        //m.retrieveMostBorrowedBook();
+        m.retrieveNonBorrowedBooks();
 
     }
 }
