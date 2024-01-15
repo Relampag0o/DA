@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<exam>
+<suppliers>
+<supplier id="1">
+<name>Copinsa</name>
+<country>España</country>
+<products>
+<product id="1">
+<name>Cementos</name>
+<price>12.0</price>
+<currency>EUR</currency>
+</product>
+<product id="2">
+<name>Ladrillos</name>
+<price>15.0</price>
+<currency>EUR</currency>
+</product>
+<product id="3">
+<name>Tejas</name>
+<price>20.0</price>
+<currency>EUR</currency>
+</product>
+</products>
+</supplier>
+<supplier id="2">
+<name>Mariscos Recio</name>
+<country>España</country>
+<products>
+<product id="7">
+<name>Cigalas</name>
+<price>12.0</price>
+<currency>JPY</currency>
+</product>
+<product id="9">
+<name>Langostinos</name>
+<price>1.0</price>
+<currency>EUR</currency>
+</product>
+<product id="10">
+<name>Rape</name>
+<price>2.0</price>
+<currency>GBP</currency>
+</product>
+<product id="11">
+<name>Almejas</name>
+<price>3.0</price>
+<currency>JPY</currency>
+</product>
+</products>
+</supplier>
+<supplier id="3">
+<name>Mostruos S.A.</name>
+<country>Japón</country>
+<products>
+<product id="12">
+<name>Bote de Gritos</name>
+<price>50.0</price>
+<currency>JPY</currency>
+</product>
+</products>
+</supplier>
+</suppliers>
+</exam>
