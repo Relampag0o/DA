@@ -6,11 +6,17 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
+
+    private Connection c;
 
     private List<Book> books;
 
@@ -26,6 +32,21 @@ public class Main {
         this.libraries = new ArrayList<Library>();
         this.genres = new ArrayList<String>();
 
+    }
+
+    public void openConnection() {
+        String db = "xmltask2";
+        String host = "localhost";
+        String port = "3306";
+        String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
+        String user = "root";
+        String password = "5856101097";
+        try {
+            this.c = DriverManager.getConnection(urlConnection, user, password);
+            System.out.println("Connected to " + db);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -120,10 +141,38 @@ public class Main {
     }
 
     public void exportToDatabase() {
+        openConnection();
+        PreparedStatement pst = null;
+        try {
+            c.setAutoCommit(true);
+            pst = c.prepareStatement("INSERT INTO library (id, address) VALUES (?, ?)");
+            for (Library lib : libraries) {
+                pst.setInt(1, lib.getId());
+                pst.setString(2, lib.getAddress());
+                pst.executeUpdate();
+                c.commit();
+            }
 
+            pst = c.prepareStatement("INSERT INTO book (id, author, title, genre, price, publish_date, description, library_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            for (Book b : books) {
+                pst.setString(1, b.getId());
+                pst.setString(2, b.getAuthor());
+                pst.setString(3, b.getTitle());
+                pst.setString(4, b.getGenre());
+                pst.setDouble(5, b.getPrice());
+                pst.setString(6, b.getPublish_date());
+                pst.setString(7, b.getDescription());
+                pst.setInt(8, b.getLibrary_id());
+                pst.executeUpdate();
+                c.commit();
+            }
 
+            pst.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
-
 
     public static void main(String[] args) {
         Main m = new Main();
@@ -133,8 +182,7 @@ public class Main {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
-            m.showBooks();
-            m.showLibraries();
+            m.exportToDatabase();
 
 
         } catch (Exception e) {
