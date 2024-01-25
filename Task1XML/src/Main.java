@@ -13,13 +13,19 @@ import java.util.*;
 public class Main {
 
     private List<Book> books;
+
+    private List<Library> libraries;
     private List<String> genres;
+
     private Book book;
+    private Library library;
 
 
     public Main() {
         this.books = new ArrayList<Book>();
+        this.libraries = new ArrayList<Library>();
         this.genres = new ArrayList<String>();
+
     }
 
 
@@ -41,10 +47,20 @@ public class Main {
                 }
                 System.out.println(">");
 
+                if (node.getNodeName().equalsIgnoreCase("library")) {
+                    this.library = new Library();
+                    this.libraries.add(library);
+                    library.setId(Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue()));
+                }
+
+                // THIS CODE IS FROM THE PREVIOUS EXERCISE...
+
                 if (node.getNodeName().equalsIgnoreCase("book")) {
                     this.book = new Book();
                     book.setId(node.getAttributes().getNamedItem("id").getNodeValue());
                     this.books.add(book);
+                    this.libraries.get(libraries.size() - 1).addBook(book);
+                    book.setLibrary_id(libraries.get(libraries.size() - 1).getId());
 
                 }
                 break;
@@ -56,6 +72,10 @@ public class Main {
 
                 System.out.println(node.getNodeValue());
                 switch (node.getParentNode().getNodeName()) {
+
+                    case "address":
+                        library.setAddress(node.getNodeValue());
+                        break;
                     case "author":
                         book.setAuthor(node.getNodeValue());
                         break;
@@ -91,60 +111,31 @@ public class Main {
         System.out.println("Books number: " + books.size());
     }
 
-    public void calculatePrice() {
-
-        double total = 0;
-        for (Book b : books) {
-            total += b.getPrice();
+    public void showLibraries() {
+        for (Library lib : libraries) {
+            System.out.println(lib + " Books: " + "\n");
+            lib.showBooks();
         }
-        System.out.println("Total price: " + total / books.size() + "€");
+        System.out.println("Libraries number: " + libraries.size());
     }
 
-    public void nameGenres() {
+    public void exportToDatabase() {
 
-        for (Book b : books) {
-            if (!genres.contains(b.getGenre())) {
-                genres.add(b.getGenre());
-            }
-        }
-        Collections.sort(genres);
-        for (String g : genres) {
-            System.out.println(g);
-        }
-
-    }
-
-    public void getNumberOfBooksPerYear() {
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        for (Book book : books) {
-            String year = book.getPublish_date().substring(0, 4);
-            if (map.containsKey(year)) {
-                map.put(year, map.get(year) + 1);
-            } else {
-                map.put(year, 1);
-            }
-        }
-
-
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
 
     }
 
 
     public static void main(String[] args) {
         Main m = new Main();
-        File file = new File("books.xml");
+        File file = new File("libraries.xml");
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
             m.showBooks();
-            m.calculatePrice();
-            m.nameGenres();
-            m.getNumberOfBooksPerYear();
+            m.showLibraries();
+
 
         } catch (Exception e) {
             e.printStackTrace();

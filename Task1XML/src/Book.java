@@ -8,6 +8,7 @@ public class Book {
     private double price;
     private String publish_date;
     private String description;
+    private int library_id;
 
 
     public Book() {
@@ -18,6 +19,7 @@ public class Book {
         this.price = 0;
         this.publish_date = "";
         this.description = "";
+        this.library_id = -1;
 
     }
 
@@ -87,7 +89,15 @@ public class Book {
                 ", genre='" + genre + '\'' +
                 ", price=" + price +
                 ", publish_date='" + publish_date + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+                ", description='" + description + '\''
+                 + ", library_id=" + library_id + '}' ;
+    }
+
+    public int getLibrary_id() {
+        return library_id;
+    }
+
+    public void setLibrary_id(int library_id) {
+        this.library_id = library_id;
     }
 }
