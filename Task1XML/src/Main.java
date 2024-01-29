@@ -135,16 +135,12 @@ public class Main {
 
     public static void main(String[] args) {
         Main m = new Main();
-        File file = new File("books.xml");
+        File file = new File("libraries.xml");
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
-            m.showBooks();
-            m.calculatePrice();
-            m.nameGenres();
-            m.getNumberOfBooksPerYear();
 
         } catch (Exception e) {
             e.printStackTrace();
