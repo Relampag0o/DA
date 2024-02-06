@@ -6,17 +6,12 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
-
-    private Connection c;
 
     private List<Book> books;
 
@@ -33,22 +28,6 @@ public class Main {
         this.genres = new ArrayList<String>();
 
     }
-
-    public void openConnection() {
-        String db = "xmltask2";
-        String host = "localhost";
-        String port = "3306";
-        String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
-        String user = "root";
-        String password = "5856101097";
-        try {
-            this.c = DriverManager.getConnection(urlConnection, user, password);
-            System.out.println("Connected to " + db);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void showNode(Node node, int level) {
         for (int i = 0; i < level; i++) {
@@ -74,11 +53,9 @@ public class Main {
                     library.setId(Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue()));
                 }
 
-                // THIS CODE IS FROM THE PREVIOUS EXERCISE...
-
                 if (node.getNodeName().equalsIgnoreCase("book")) {
                     this.book = new Book();
-                    book.setId(node.getAttributes().getNamedItem("id").getNodeValue());
+                    book.setId((node.getAttributes().getNamedItem("id").getNodeValue()));
                     this.books.add(book);
                     this.libraries.get(libraries.size() - 1).addBook(book);
                     book.setLibrary_id(libraries.get(libraries.size() - 1).getId());
@@ -125,52 +102,60 @@ public class Main {
         }
     }
 
-    public void showBooks() {
-        for (Book b : books) {
-            System.out.println(b);
-        }
-        System.out.println("Books number: " + books.size());
-    }
-
     public void showLibraries() {
-        for (Library lib : libraries) {
-            System.out.println(lib + " Books: " + "\n");
-            lib.showBooks();
+        for (Library library : libraries) {
+            System.out.println(library);
+            library.showBooks();
         }
-        System.out.println("Libraries number: " + libraries.size());
     }
 
-    public void exportToDatabase() {
-        openConnection();
-        PreparedStatement pst = null;
-        try {
-            c.setAutoCommit(true);
-            pst = c.prepareStatement("INSERT INTO library (id, address) VALUES (?, ?)");
-            for (Library lib : libraries) {
-                pst.setInt(1, lib.getId());
-                pst.setString(2, lib.getAddress());
-                pst.executeUpdate();
-                c.commit();
+    public void showBooks() {
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+
+    public void showGenres() {
+        for (String genre : genres) {
+            System.out.println(genre);
+        }
+    }
+
+    public void increasePrice(double amount) {
+        for (Book book : books) {
+            int id = book.getId().charAt(book.getId().length() - 1);
+            if (id % 2 == 0)
+                book.setPrice(book.getPrice() + amount);
+        }
+    }
+
+    public void addBookToLibrary1(Book book) {
+        for (Library library : libraries) {
+            if (library.getId() == 1)
+                library.addBook(book);
+        }
+    }
+
+    public void deleteBooks() {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getPrice() < 5)
+                books.remove(i);
+        }
+    }
+
+    public void moveBooksFromLib2ToLib3(String idBook) {
+        for (Book book : this.books) {
+            if (book.getLibrary_id() == 2 && book.getId().equalsIgnoreCase(idBook)) {
+                for (Library library : this.libraries) {
+                    if (library.getId() ==2){
+                        library.deleteBook(idBook);
+                    }else if (library.getId() == 3){
+                        library.addBook(book);
+
+                    }
+                }
+
             }
-
-            pst = c.prepareStatement("INSERT INTO book (id, author, title, genre, price, publish_date, description, library_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            for (Book b : books) {
-                pst.setString(1, b.getId());
-                pst.setString(2, b.getAuthor());
-                pst.setString(3, b.getTitle());
-                pst.setString(4, b.getGenre());
-                pst.setDouble(5, b.getPrice());
-                pst.setString(6, b.getPublish_date());
-                pst.setString(7, b.getDescription());
-                pst.setInt(8, b.getLibrary_id());
-                pst.executeUpdate();
-                c.commit();
-            }
-
-            pst.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-
         }
     }
 
@@ -182,15 +167,11 @@ public class Main {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
-
-            m.exportToDatabase();
-
-
+            m.moveBooksFromLib2ToLib3("bk105");
+            m.showLibraries();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }
