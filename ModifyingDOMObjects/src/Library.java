@@ -1,3 +1,6 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +68,30 @@ public class Library {
                 "id=" + id +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    public void toXML(Document doc){
+        Element libraries = doc.getDocumentElement();
+        Element library = doc.createElement("library");
+        libraries.appendChild(library);
+
+        Element id = doc.createElement("id");
+        id.appendChild(doc.createTextNode(String.valueOf(this.id)));
+        library.appendChild(id);
+
+        Element address = doc.createElement("address");
+        address.appendChild(doc.createTextNode(this.address));
+        library.appendChild(address);
+
+        Element books = doc.createElement("books");
+        library.appendChild(books);
+
+        for (Book book : this.books) {
+            book.toXML(doc, books);
+        }
+
+
+
+
     }
 }

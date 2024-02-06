@@ -1,3 +1,6 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 public class Book {
 
     private String id;
@@ -22,6 +25,19 @@ public class Book {
         this.library_id = -1;
 
     }
+
+    public Book(String id, String author, String title, String genre, double price, String publish_date, String description, int library_id) {
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.publish_date = publish_date;
+        this.description = description;
+        this.library_id = library_id;
+    }
+
+    
 
 
     public String getId() {
@@ -90,7 +106,7 @@ public class Book {
                 ", price=" + price +
                 ", publish_date='" + publish_date + '\'' +
                 ", description='" + description + '\''
-                 + ", library_id=" + library_id + '}' ;
+                + ", library_id=" + library_id + '}';
     }
 
     public int getLibrary_id() {
@@ -102,4 +118,36 @@ public class Book {
     }
 
 
+    public void toXML(Document doc, Element books) {
+        Element book = doc.createElement("book");
+        books.appendChild(book);
+
+        Element id = doc.createElement("id");
+        id.appendChild(doc.createTextNode(this.id));
+        book.appendChild(id);
+
+        Element author = doc.createElement("author");
+        author.appendChild(doc.createTextNode(this.author));
+        book.appendChild(author);
+
+        Element title = doc.createElement("title");
+        title.appendChild(doc.createTextNode(this.title));
+        book.appendChild(title);
+
+        Element genre = doc.createElement("genre");
+        genre.appendChild(doc.createTextNode(this.genre));
+        book.appendChild(genre);
+
+        Element price = doc.createElement("price");
+        price.appendChild(doc.createTextNode(String.valueOf(this.price)));
+        book.appendChild(price);
+
+        Element publish_date = doc.createElement("publish_date");
+        publish_date.appendChild(doc.createTextNode(this.publish_date));
+        book.appendChild(publish_date);
+
+        Element description = doc.createElement("description");
+        description.appendChild(doc.createTextNode(this.description));
+        book.appendChild(description);
+    }
 }

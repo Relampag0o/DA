@@ -1,16 +1,17 @@
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+
 public class Main {
 
     private List<Book> books;
@@ -167,8 +168,33 @@ public class Main {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
-            m.moveBooksFromLib2ToLib3("bk105");
-            m.showLibraries();
+            m.increasePrice(100);
+            m.addBookToLibrary1(new Book("bk109", "Ralls, Kim", "Midnight Rain", "Fantasy", 5.95, "2000-12-16", "A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.",3));
+            m.moveBooksFromLib2ToLib3("bk112");
+            //m.deleteBooks();
+
+
+            // CODE TO CREATE THE NEW XML FILE
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+             doc = docBuilder.newDocument();
+             Element rootElement = doc.createElement("libraries");
+             doc.appendChild(rootElement);
+
+             // ITERATING OVER THE LIBRARIES
+            for (Library library : m.libraries) {
+                library.toXML(doc);
+            }
+
+            // WRITE THE CONTENT INTO XML FILE
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File("librariesUpdated.xml"));
+
+            transformer.transform(source, result);
 
         } catch (Exception e) {
             e.printStackTrace();
