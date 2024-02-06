@@ -12,10 +12,20 @@ public class Product {
 
     public Product() {
         this.id = -1;
-        this.name = "";
+        this.name = " ";
         this.price = -1;
-        this.currency = "";
+        this.currency = " ";
         this.supplierId = -1;
+
+    }
+
+    public Product( int id, String name, int price, String currency, int supplierId) {
+
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.currency = currency;
+        this.supplierId = supplierId;
 
     }
 
@@ -60,9 +70,9 @@ public class Product {
     }
 
 
-    public void toXML(Document doc, Element products) {
+    public void toXML(Document doc,Element products) {
         Element productElement = doc.createElement("product");
-        doc.appendChild(productElement);
+        products.appendChild(productElement);
         Attr attr = doc.createAttribute("id");
         attr.setValue(String.valueOf(this.id));
         productElement.setAttributeNode(attr);

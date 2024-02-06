@@ -1,4 +1,3 @@
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -18,11 +17,12 @@ public class Supplier {
 
     public Supplier() {
         this.id = -1;
-        this.name = "";
-        this.country = "";
+        this.name = " ";
+        this.country = " ";
         this.products = new ArrayList<>();
     }
-
+    // ASK WHY DO I GET ERRORS IF I DELETE THOSE SPACES AT CLOSING TAGS.
+    // FOR EXAMPLE, IF I DELETE THE SPACE, THE TAG WONT CLOSE PROPERLY.
 
     public int getId() {
         return id;
@@ -48,9 +48,15 @@ public class Supplier {
         this.country = country;
     }
 
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+
     public void toXML(Document doc) {
+        Element suppliers = doc.getDocumentElement();
+
         Element supplier = doc.createElement("supplier");
-        doc.getDocumentElement().appendChild(supplier);
+        suppliers.appendChild(supplier);
 
         Element id = doc.createElement("id");
         id.appendChild(doc.createTextNode(String.valueOf(this.id)));
@@ -66,8 +72,10 @@ public class Supplier {
 
         Element products = doc.createElement("products");
         supplier.appendChild(products);
+
         for (Product product : this.products) {
             product.toXML(doc, products);
         }
     }
+
 }

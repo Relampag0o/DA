@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<suppliers>
+    <supplier>
+        <id>-1</id>
+        <name> </name>
+        <country> </country>
+        <products>
+            <product id="1">
+                <name>2</name>
+                <price>3</price>
+                <currency>4</currency>
+                <supplierId>5</supplierId>
+            </product>
+        </products>
+    </supplier>
+</suppliers>

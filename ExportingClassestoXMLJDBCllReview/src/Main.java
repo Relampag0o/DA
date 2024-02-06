@@ -17,6 +17,8 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
         Supplier supplier = new Supplier();
+        Product product = new Product(1, "2", 3, "4", 5);
+        supplier.addProduct(product);
 
 
         try {
@@ -24,9 +26,12 @@ public class Main {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("suppliers");
+            doc.appendChild(rootElement);
+
             supplier.toXML(doc);
 
-            //Se escribe el contenido del XML en un archivo
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
