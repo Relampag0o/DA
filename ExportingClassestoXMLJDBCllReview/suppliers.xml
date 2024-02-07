@@ -2,8 +2,8 @@
 <suppliers>
     <supplier>
         <id>-1</id>
-        <name> </name>
-        <country> </country>
+        <name/>
+        <country/>
         <products>
             <product id="1">
                 <name>2</name>

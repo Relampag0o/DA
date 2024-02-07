@@ -17,12 +17,11 @@ public class Supplier {
 
     public Supplier() {
         this.id = -1;
-        this.name = " ";
-        this.country = " ";
+        this.name = "";
+        this.country = "";
         this.products = new ArrayList<>();
     }
-    // ASK WHY DO I GET ERRORS IF I DELETE THOSE SPACES AT CLOSING TAGS.
-    // FOR EXAMPLE, IF I DELETE THE SPACE, THE TAG WONT CLOSE PROPERLY.
+
 
     public int getId() {
         return id;
