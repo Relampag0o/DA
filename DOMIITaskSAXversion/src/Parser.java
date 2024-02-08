@@ -3,6 +3,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Parser extends DefaultHandler {
     Stack<String> stack;
 
     Library library;
+    private Connection c;
 
 
     public Parser() {
@@ -82,10 +84,12 @@ public class Parser extends DefaultHandler {
         }
     }
 
+    // FIX THAT WITH OPENCONECCTION METHOD
+
     public void exportDataToDb() {
         PreparedStatement pst = null;
         try {
-            pst = Db.getConnection().prepareStatement("INSERT INTO libraries VALUES (?, ?)");
+            pst = this.c.getConnection().prepareStatement("INSERT INTO libraries VALUES (?, ?)");
             for (Library library : libraries) {
                 pst.setInt(1, library.getId());
                 pst.setString(2, library.getAddress());
