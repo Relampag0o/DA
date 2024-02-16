@@ -4,7 +4,9 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -86,10 +88,27 @@ public class Parser extends DefaultHandler {
 
     // FIX THAT WITH OPENCONECCTION METHOD
 
+
+    public void openConnection() {
+        String db = "dbproducts";
+        String host = "localhost";
+        String port = "3306";
+        String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
+        String user = "root";
+        String password = "..";
+        try {
+            this.c = DriverManager.getConnection(urlConnection, user, password);
+            System.out.println("Connected to: " + db);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void exportDataToDb() {
         PreparedStatement pst = null;
         try {
-            pst = this.c.getConnection().prepareStatement("INSERT INTO libraries VALUES (?, ?)");
+            pst = c.prepareStatement("INSERT INTO libraries VALUES (?, ?)");
             for (Library library : libraries) {
                 pst.setInt(1, library.getId());
                 pst.setString(2, library.getAddress());
@@ -111,6 +130,7 @@ public class Parser extends DefaultHandler {
 
             parser.parse("libraries.xml", p);
             p.showLibraries();
+            p.openConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
