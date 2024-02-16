@@ -5,50 +5,25 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
-    private Connection c;
-
     private List<Book> books;
-
-
-    private List<String> genres;
     private List<Library> libraries;
     private Book book;
     private Library library;
 
-
     public Main() {
         this.books = new ArrayList<Book>();
         this.libraries = new ArrayList<Library>();
-        this.genres = new ArrayList<String>();
-
     }
-
-    public void openConnection() {
-        String db = "xmltask2";
-        String host = "localhost";
-        String port = "3306";
-        String urlConnection = "jdbc:mariadb://" + host + ":" + port + "/" + db;
-        String user = "root";
-        String password = "5856101097";
-        try {
-            this.c = DriverManager.getConnection(urlConnection, user, password);
-            System.out.println("Connected to " + db);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void showNode(Node node, int level) {
         for (int i = 0; i < level; i++) {
@@ -74,7 +49,6 @@ public class Main {
                     library.setId(Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue()));
                 }
 
-                // THIS CODE IS FROM THE PREVIOUS EXERCISE...
 
                 if (node.getNodeName().equalsIgnoreCase("book")) {
                     this.book = new Book();
@@ -125,52 +99,25 @@ public class Main {
         }
     }
 
-    public void showBooks() {
-        for (Book b : books) {
-            System.out.println(b);
-        }
-        System.out.println("Books number: " + books.size());
-    }
-
     public void showLibraries() {
-        for (Library lib : libraries) {
-            System.out.println(lib + " Books: " + "\n");
-            lib.showBooks();
+        for (Library library : libraries) {
+            System.out.println(library);
+
         }
-        System.out.println("Libraries number: " + libraries.size());
     }
 
-    public void exportToDatabase() {
-        openConnection();
-        PreparedStatement pst = null;
+    public void exportToJson() {
+        File file = new File("libraries.json");
         try {
-            c.setAutoCommit(true);
-            pst = c.prepareStatement("INSERT INTO library (id, address) VALUES (?, ?)");
-            for (Library lib : libraries) {
-                pst.setInt(1, lib.getId());
-                pst.setString(2, lib.getAddress());
-                pst.executeUpdate();
-                c.commit();
+            BufferedWriter bfw = new BufferedWriter(new FileWriter(file));
+            bfw.write("[\n");
+            for (int i = 0; i < libraries.size(); i++) {
+                libraries.get(i).toJson(bfw, i == libraries.size() - 1);
             }
-
-            pst = c.prepareStatement("INSERT INTO book (id, author, title, genre, price, publish_date, description, library_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            for (Book b : books) {
-                pst.setString(1, b.getId());
-                pst.setString(2, b.getAuthor());
-                pst.setString(3, b.getTitle());
-                pst.setString(4, b.getGenre());
-                pst.setDouble(5, b.getPrice());
-                pst.setString(6, b.getPublish_date());
-                pst.setString(7, b.getDescription());
-                pst.setInt(8, b.getLibrary_id());
-                pst.executeUpdate();
-                c.commit();
-            }
-
-            pst.close();
+            bfw.write("\n]");
+            bfw.close();
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
@@ -182,9 +129,7 @@ public class Main {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
-
-            m.exportToDatabase();
-
+            m.exportToJson();
 
 
         } catch (Exception e) {
@@ -192,5 +137,4 @@ public class Main {
         }
 
     }
-
 }
