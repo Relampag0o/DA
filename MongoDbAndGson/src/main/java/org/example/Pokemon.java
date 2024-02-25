@@ -8,8 +8,8 @@ public class Pokemon {
     private String name;
     private String img;
     private String[] type;
-    private double height;
-    private double weight;
+    private String height;
+    private String weight;
     private String candy;
     private double spawn_chance;
     private double avg_spawns;
@@ -17,7 +17,7 @@ public class Pokemon {
     private String[] weaknesses;
     private Object[] next_evolution;
 
-    public Pokemon(int _id, int num, String name, String img, String[] type, double height, double weight, String candy, double spawn_chance, double avg_spawns, double[] multipliers, String[] weaknesses, Object[] next_evolution) {
+    public Pokemon(int _id, int num, String name, String img, String[] type, String height, String weight, String candy, double spawn_chance, double avg_spawns, double[] multipliers, String[] weaknesses, Object[] next_evolution) {
         this._id = _id;
         this.num = num;
         this.name = name;
@@ -73,19 +73,19 @@ public class Pokemon {
         this.type = type;
     }
 
-    public double getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
@@ -135,6 +135,12 @@ public class Pokemon {
 
     public void setNext_evolution(Object[] next_evolution) {
         this.next_evolution = next_evolution;
+    }
+
+    public void showEvolutions(){
+        for (Object evo: this.next_evolution){
+            System.out.println(evo.toString());
+        }
     }
 
     @Override
