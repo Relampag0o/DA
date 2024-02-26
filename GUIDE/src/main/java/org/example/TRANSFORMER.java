@@ -16,12 +16,29 @@ import java.io.File;
 
 public class TRANSFORMER {
     public static void main(String[] args) {
-        // CHANGE THIS
+        // EXAMPLE OF TOXML FROM A CHILD CLASS:
         /*
-        Supplier supplier = new Supplier();
-        Product product = new Product(1, "2", 3, "4", 5);
-        supplier.addProduct(product);
+        public void toXML(Document doc){
+         Element workers = doc.getDocumentElement();
+         Element worker = doc.createElement("worker");
+         workers.appendChild(worker);
 
+         Element fullNameElement = doc.createElement("full_name");
+         fullNameElement.appendChild(doc.createTextNode(this.full_name));
+         worker.appendChild(fullNameElement);
+
+        Element jobTitleElement = doc.createElement("jobTitle");
+        jobTitleElement.appendChild(doc.createTextNode(this.jobTitle));
+        worker.appendChild(jobTitleElement);
+
+        Element addressesElement = doc.createElement("addresses");
+        worker.appendChild(addressesElement);
+
+        this.address.toXML(doc,addressesElement);
+
+        this.company.toXML(doc,addressesElement);
+
+    }
          */
 
 
