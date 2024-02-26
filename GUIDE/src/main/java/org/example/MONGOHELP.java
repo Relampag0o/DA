@@ -10,7 +10,12 @@ import org.bson.Document;
 public class MONGOHELP {
     MongoDatabase database = null;
 
-
+    public void openConnection() {
+        String uri = "mongodb://localhost:27017";
+        MongoClient mongoClient = MongoClients.create(uri);
+        System.out.println("Connected to the database successfully");
+        database = mongoClient.getDatabase("CHANGE THIS");
+    }
     public void exportToJson() {
         try {
             Gson gson = new Gson();
