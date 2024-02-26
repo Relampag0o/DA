@@ -33,6 +33,7 @@ public class Main {
         // Create a CodecRegistry containing the PojoCodecProvider instance
         PojoCodecProvider pojoCodecProvider = PojoCodecProvider.builder()
                 .automatic(true)
+                .register(Library.class)
                 .register(Book.class) // Register the Book class
                 .build();
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),

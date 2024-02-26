@@ -1,18 +1,25 @@
 package org.example;
 
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
+
 public class Book {
-    private String id;
+
+
+    @BsonProperty("_id")
+    private ObjectId id;
     private String author;
     private String title;
     private String genre;
-    private double price;
+    private String price;
 
     private String publish_date;
     private String description;
 
     public Book() {
     }
-    public Book(String id, String author, String title, String genre, double price, String publish_date, String description) {
+    public Book(ObjectId id, String author, String title, String genre, String price, String publish_date, String description) {
         this.id = id;
         this.author = author;
         this.title = title;
@@ -22,11 +29,11 @@ public class Book {
         this.description = description;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -54,11 +61,11 @@ public class Book {
         this.genre = genre;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
