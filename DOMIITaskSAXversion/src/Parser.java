@@ -130,7 +130,6 @@ public class Parser extends DefaultHandler {
 
             parser.parse("libraries.xml", p);
             p.showLibraries();
-            p.openConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
