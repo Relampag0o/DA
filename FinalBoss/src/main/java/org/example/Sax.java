@@ -78,14 +78,14 @@ public class Sax extends DefaultHandler {
             String tag = stack.peek();
             switch (tag) {
                 case "name":
-                    String[] parts = value.split(",");
-                    this.pet.setName(parts[0]);
+                    System.out.println("Printing name: " + value);
+                    this.pet.setName(value);
 
                     break;
 
                 case "age":
-                    parts = value.split(",");
-                    this.pet.setAge(Integer.parseInt(parts[0]));
+                    System.out.println("Printing age: " + value);
+                    this.pet.setAge(Integer.parseInt(value));
                     break;
             }
         }
@@ -150,7 +150,6 @@ public class Sax extends DefaultHandler {
 
             parser.parse("people.xml", s);
             s.showPersons();
-            s.exportToJson();
         } catch (Exception e) {
             e.printStackTrace();
         }
