@@ -1,10 +1,14 @@
 package org.example;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Arrays;
 import java.util.List;
 
 public class Record {
-    private String name;
+
+    @SerializedName("name")
+    private String namee;
     private int numberrange;
     private String text;
     private String region;
@@ -24,11 +28,11 @@ public class Record {
     }
 
     public String getName() {
-        return name;
+        return namee;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.namee = name;
     }
 
     public int getNumberrange() {
@@ -67,7 +71,7 @@ public class Record {
     @Override
     public String toString() {
         return "Record{" +
-                "name='" + name + '\'' +
+                "name='" + namee + '\'' +
                 ", numberrange=" + numberrange +
                 ", text='" + text + '\'' +
                 ", region='" + region + '\'' +

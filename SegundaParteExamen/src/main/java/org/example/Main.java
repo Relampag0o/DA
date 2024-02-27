@@ -1,5 +1,7 @@
 package org.example;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -7,6 +9,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -49,6 +53,22 @@ public class Main {
 
     }
 
+    public void parseJson() {
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Type type = new TypeToken<ArrayList<Record>>() {
+            }.getType();
+            this.records = gson.fromJson(new BufferedReader(new FileReader("records.json")), type);
+
+            for (Record r: records){
+                System.out.println(r);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void showRecords() {
         for (Record r : records) {
             System.out.println(r);
@@ -59,7 +79,7 @@ public class Main {
 
         Main main = new Main();
         main.openConnection();
-        main.importFromMongo();
         main.showRecords();
+        main.parseJson();
     }
 }
