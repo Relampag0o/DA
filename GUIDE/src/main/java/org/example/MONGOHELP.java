@@ -16,12 +16,13 @@ public class MONGOHELP {
         System.out.println("Connected to the database successfully");
         database = mongoClient.getDatabase("CHANGE THIS");
     }
+
     public void exportToJson() {
         try {
             Gson gson = new Gson();
 
             // Get a MongoCollection from the MongoDatabase
-            MongoCollection<Document> collection = database.getCollection("persons");
+            MongoCollection<Document> collection = database.getCollection("CHANG€€E THIS!!");
 
             /*
             // Iterate over the persons list
@@ -43,5 +44,17 @@ public class MONGOHELP {
             System.out.println("An error occurred while exporting to JSON:");
             e.printStackTrace();
         }
+    }
+
+    public void importFromMongo() {
+        MongoCollection<Document> collection = database.getCollection("persons");
+        /*
+        for (Document doc : collection.find()) {
+            Person person = gson.fromJson(doc.toJson(), Person.class);
+            persons.add(person);
+        }
+
+         */
+
     }
 }
