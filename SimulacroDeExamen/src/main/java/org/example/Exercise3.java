@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,6 +158,22 @@ public class Exercise3 {
         System.out.println("Data succesfully added!");
     }
 
+    public void generateJson() {
+
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(this.cds);
+            FileWriter writer = new FileWriter("cds.json");
+            writer.write(json);
+
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     public static void main(String[] args) {
         Exercise3 exercise3 = new Exercise3();
@@ -168,7 +185,7 @@ public class Exercise3 {
             exercise3.showNode(doc, 0);
             exercise3.showCds();
             exercise3.openConnection();
-            exercise3.exportToMongo();
+            exercise3.generateJson();
 
 
         } catch (Exception e) {

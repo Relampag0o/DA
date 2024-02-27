@@ -47,13 +47,47 @@ public class MONGOHELP {
     }
 
     public void importFromMongo() {
-        MongoCollection<Document> collection = database.getCollection("persons");
+        MongoCollection<Document> collection = database.getCollection("!!!CHANGE THIS!!!!");
         /*
         for (Document doc : collection.find()) {
             Person person = gson.fromJson(doc.toJson(), Person.class);
             persons.add(person);
         }
 
+         */
+        // TODO IF THERE IS A LIST:
+        /*
+         public void importFromMongo(){
+        MongoCollection<Document> collection = database.getCollection("records");
+
+        for (Document doc: collection.find()){
+            Record r = new Record();
+            r.setName(doc.getString("name"));
+            r.setNumberrange((doc.getInteger("numberrange")));
+            r.setText(doc.getString("text"));
+            r.setRegion(doc.getString("region"));
+            r.setActive(doc.getBoolean("active"));
+            List<String> list = doc.getList("languages", String.class);
+            String[] languages = null;
+            if (list != null) {
+                languages = list.toArray(new String[0]);
+            }
+            // OR:
+            List<String> list = doc.getList("languages", String.class);
+            if (list != null) {
+                r.setLanguages(list);
+            }
+
+            .....
+            r.setLanguages(languages);
+            records.add(r);
+
+
+        }
+        System.out.println("Json successfully loaded to list!");
+
+
+    }
          */
 
     }

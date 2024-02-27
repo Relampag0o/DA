@@ -1,0 +1,210 @@
+[
+  {
+    "TITLE": "Empire Burlesque",
+    "ARTIST": "Bob Dylan",
+    "COUNTRY": "USA",
+    "COMPANY": "Columbia",
+    "PRICE": 1985.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Hide your heart",
+    "ARTIST": "Bonnie Tyler",
+    "COUNTRY": "UK",
+    "COMPANY": "CBS Records",
+    "PRICE": 1988.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Greatest Hits",
+    "ARTIST": "Dolly Parton",
+    "COUNTRY": "USA",
+    "COMPANY": "RCA",
+    "PRICE": 1982.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Still got the blues",
+    "ARTIST": "Gary Moore",
+    "COUNTRY": "UK",
+    "COMPANY": "Virgin records",
+    "PRICE": 1990.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Eros",
+    "ARTIST": "Eros Ramazzotti",
+    "COUNTRY": "EU",
+    "COMPANY": "BMG",
+    "PRICE": 1997.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "One night only",
+    "ARTIST": "Bee Gees",
+    "COUNTRY": "UK",
+    "COMPANY": "Polydor",
+    "PRICE": 1998.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Sylvias Mother",
+    "ARTIST": "Dr.Hook",
+    "COUNTRY": "UK",
+    "COMPANY": "CBS",
+    "PRICE": 1973.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Maggie May",
+    "ARTIST": "Rod Stewart",
+    "COUNTRY": "UK",
+    "COMPANY": "Pickwick",
+    "PRICE": 1990.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Romanza",
+    "ARTIST": "Andrea Bocelli",
+    "COUNTRY": "EU",
+    "COMPANY": "Polydor",
+    "PRICE": 1996.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "When a man loves a woman",
+    "ARTIST": "Percy Sledge",
+    "COUNTRY": "USA",
+    "COMPANY": "Atlantic",
+    "PRICE": 1987.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Black angel",
+    "ARTIST": "Savage Rose",
+    "COUNTRY": "EU",
+    "COMPANY": "Mega",
+    "PRICE": 1995.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "1999 Grammy Nominees",
+    "ARTIST": "Many",
+    "COUNTRY": "USA",
+    "COMPANY": "Grammy",
+    "PRICE": 1999.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "For the good times",
+    "ARTIST": "Kenny Rogers",
+    "COUNTRY": "UK",
+    "COMPANY": "Mucik Master",
+    "PRICE": 1995.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Big Willie style",
+    "ARTIST": "Will Smith",
+    "COUNTRY": "USA",
+    "COMPANY": "Columbia",
+    "PRICE": 1997.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Tupelo Honey",
+    "ARTIST": "Van Morrison",
+    "COUNTRY": "UK",
+    "COMPANY": "Polydor",
+    "PRICE": 1971.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Soulsville",
+    "ARTIST": "Jorn Hoel",
+    "COUNTRY": "Norway",
+    "COMPANY": "WEA",
+    "PRICE": 1996.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "The very best of",
+    "ARTIST": "Cat Stevens",
+    "COUNTRY": "UK",
+    "COMPANY": "Island",
+    "PRICE": 1990.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Stop",
+    "ARTIST": "Sam Brown",
+    "COUNTRY": "UK",
+    "COMPANY": "A and M",
+    "PRICE": 1988.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Bridge of Spies",
+    "ARTIST": "T\u0027Pau",
+    "COUNTRY": "UK",
+    "COMPANY": "Siren",
+    "PRICE": 1987.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Private Dancer",
+    "ARTIST": "Tina Turner",
+    "COUNTRY": "UK",
+    "COMPANY": "Capitol",
+    "PRICE": 1983.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Midt om natten",
+    "ARTIST": "Kim Larsen",
+    "COUNTRY": "EU",
+    "COMPANY": "Medley",
+    "PRICE": 1983.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Pavarotti Gala Concert",
+    "ARTIST": "Luciano Pavarotti",
+    "COUNTRY": "UK",
+    "COMPANY": "DECCA",
+    "PRICE": 1991.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "The dock of the bay",
+    "ARTIST": "Otis Redding",
+    "COUNTRY": "USA",
+    "COMPANY": "Stax Records",
+    "PRICE": 1968.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Picture book",
+    "ARTIST": "Simply Red",
+    "COUNTRY": "EU",
+    "COMPANY": "Elektra",
+    "PRICE": 1985.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Red",
+    "ARTIST": "The Communards",
+    "COUNTRY": "UK",
+    "COMPANY": "London",
+    "PRICE": 1987.0,
+    "YEAR": 0
+  },
+  {
+    "TITLE": "Unchain my heart",
+    "ARTIST": "Joe Cocker",
+    "COUNTRY": "USA",
+    "COMPANY": "EMI",
+    "PRICE": 1987.0,
+    "YEAR": 0
+  }
+]
