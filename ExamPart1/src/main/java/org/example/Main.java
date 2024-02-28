@@ -1,5 +1,10 @@
 package org.example;
 
+import com.google.gson.Gson;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -19,9 +24,12 @@ public class Main {
     private List<Pokemon> pokemons;
     private Pokemon pokemon;
     private Evolution evolution;
+    MongoDatabase database;
+
 
     public Main() {
         this.pokemons = new ArrayList<>();
+        openConnection();
     }
 
     public void showNode(Node node, int level) {
@@ -53,7 +61,7 @@ public class Main {
                     this.pokemons.add(this.pokemon);
 
 
-                }else if (node.getNodeName().equalsIgnoreCase("evolution")){
+                } else if (node.getNodeName().equalsIgnoreCase("evolution")) {
                     this.evolution = new Evolution();
                     this.pokemon.setEvolution(evolution);
                     evolution.setName(node.getAttributes().getNamedItem("name").getNodeValue());
@@ -97,6 +105,24 @@ public class Main {
         }
     }
 
+    public void openConnection() {
+        String uri = "mongodb://localhost:27017";
+        MongoClient mongoClient = MongoClients.create(uri);
+        System.out.println("Connected to the database successfully");
+        database = mongoClient.getDatabase("pokemonExam");
+    }
+
+    public void exportToMongoDB() {
+        Gson gson = new Gson();
+        MongoCollection<org.bson.Document> collection = database.getCollection("pokemonsExam");
+        for (Pokemon pokemon : this.pokemons) {
+            String json = gson.toJson(pokemon);
+            org.bson.Document doc = org.bson.Document.parse(json);
+            collection.insertOne(doc);
+        }
+        System.out.println("Data loaded...");
+    }
+
     public static void main(String[] args) {
         Main m = new Main();
         File file = new File("pokemons.xml");
@@ -106,9 +132,7 @@ public class Main {
             Document doc = dBuilder.parse(file);
             m.showNode(doc, 0);
             m.showPokemons();
-
-
-
+            m.exportToMongoDB();
 
         } catch (Exception e) {
             e.printStackTrace();
