@@ -39,6 +39,12 @@ public class TRANSFORMER {
         this.company.toXML(doc,addressesElement);
 
     }
+
+    TODO: Si hay atributes a la hora de crear la clase se hace asi:
+    Attr attribute = doc.createAttribute("firstname");
+        attribute.setValue(this.full_name);
+        worker.setAttributeNode(attribute);
+
          */
 
 
