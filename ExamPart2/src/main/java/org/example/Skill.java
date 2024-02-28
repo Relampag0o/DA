@@ -1,5 +1,8 @@
 package org.example;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 public class Skill {
 
     private String name;
@@ -36,5 +39,18 @@ public class Skill {
                 "name='" + name + '\'' +
                 ", level='" + level + '\'' +
                 '}';
+    }
+
+    public void toXML(Document doc, Element element) {
+        Element skill = doc.createElement("skill");
+        element.appendChild(skill);
+
+        Element name = doc.createElement("name");
+        name.appendChild(doc.createTextNode(this.name));
+        skill.appendChild(name);
+
+        Element level = doc.createElement("level");
+        level.appendChild(doc.createTextNode(this.level));
+        skill.appendChild(level);
     }
 }

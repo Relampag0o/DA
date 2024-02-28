@@ -1,5 +1,8 @@
 package org.example;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 public class Contact {
     private String email;
     private String phone;
@@ -35,5 +38,18 @@ public class Contact {
                 "email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public void toXML(Document document,Element element) {
+        Element contact = document.createElement("contact");
+        element.appendChild(contact);
+
+        Element email = document.createElement("email");
+        email.appendChild(document.createTextNode(this.email));
+        contact.appendChild(email);
+
+        Element phone = document.createElement("phone");
+        phone.appendChild(document.createTextNode(this.phone));
+        contact.appendChild(phone);
     }
 }

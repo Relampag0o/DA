@@ -1,5 +1,8 @@
 package org.example;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,5 +101,45 @@ public class User {
                 ", hobbies=" + hobbies +
                 ", skills=" + skills +
                 '}';
+    }
+
+    public void toXML(Document doc, Element users){
+        Element user = doc.createElement("user");
+        users.appendChild(user);
+
+        Element nameElement = doc.createElement("name");
+        nameElement.appendChild(doc.createTextNode(this.name));
+        user.appendChild(nameElement);
+
+        Element ageElement = doc.createElement("age");
+        ageElement.appendChild(doc.createTextNode(String.valueOf(this.age)));
+        user.appendChild(ageElement);
+
+        Element isStudentElement = doc.createElement("isStudent");
+        isStudentElement.appendChild(doc.createTextNode(String.valueOf(this.isStudent)));
+        user.appendChild(isStudentElement);
+
+        Element heightElement = doc.createElement("height");
+        heightElement.appendChild(doc.createTextNode(String.valueOf(this.height)));
+        user.appendChild(heightElement);
+
+        Element hobbiesElement = doc.createElement("hobbies");
+        user.appendChild(hobbiesElement);
+
+        for (String hobby : this.hobbies) {
+            Element hobbyElement = doc.createElement("hobby");
+            hobbyElement.appendChild(doc.createTextNode(hobby));
+            hobbiesElement.appendChild(hobbyElement);
+        }
+
+        this.address.toXML(doc, user);
+        this.contact.toXML(doc, user);
+
+        Element skillsElement = doc.createElement("skills");
+        user.appendChild(skillsElement);
+
+        for (Skill skill : this.skills) {
+            skill.toXML(doc, skillsElement);
+        }
     }
 }
